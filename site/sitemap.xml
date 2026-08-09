@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://gradekit.pages.dev/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://gradekit.pages.dev/grade-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gradekit.pages.dev/final-grade-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gradekit.pages.dev/weighted-grade-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gradekit.pages.dev/gpa-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gradekit.pages.dev/test-grade-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gradekit.pages.dev/ez-grader/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gradekit.pages.dev/percentage-grade-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+</urlset>
