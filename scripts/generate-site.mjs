@@ -111,6 +111,7 @@ await writeFile(resolve(root, "index.html"), `<!doctype html><html lang="en"><he
 
 const routes = ["", ...Object.keys(pages).map((p) => `${p}/`)];
 await writeFile(resolve(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((p) => `  <url><loc>${url}/${p}</loc><changefreq>monthly</changefreq><priority>${p ? "0.8" : "1.0"}</priority></url>`).join("\n")}\n</urlset>\n`);
-await writeFile(resolve(root, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${url}/sitemap.xml\n`);
+await writeFile(resolve(root, "sitemap.txt"), `${routes.map((p) => `${url}/${p}`).join("\n")}\n`);
+await writeFile(resolve(root, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${url}/sitemap.xml\nSitemap: ${url}/sitemap.txt\n`);
 await writeFile(resolve(root, "_headers"), `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/assets/*\n  Cache-Control: public, max-age=604800\n`);
 console.log("Generated GradeKit source pages.");

@@ -8,11 +8,11 @@ const siteUrl = (process.env.SITE_URL || defaultUrl).replace(/\/$/, "");
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
-for (const item of ["index.html", "robots.txt", "sitemap.xml", "google037f1ca7862cb5a0.html", "_headers", "assets", "grade-calculator", "final-grade-calculator", "weighted-grade-calculator", "gpa-calculator", "test-grade-calculator", "ez-grader", "percentage-grade-calculator"]) {
+for (const item of ["index.html", "robots.txt", "sitemap.xml", "sitemap.txt", "google037f1ca7862cb5a0.html", "_headers", "assets", "grade-calculator", "final-grade-calculator", "weighted-grade-calculator", "gpa-calculator", "test-grade-calculator", "ez-grader", "percentage-grade-calculator"]) {
   await cp(resolve(root, "site", item), resolve(dist, item), { recursive: true });
 }
 
-for (const file of ["index.html", "robots.txt", "sitemap.xml", ...[
+for (const file of ["index.html", "robots.txt", "sitemap.xml", "sitemap.txt", ...[
   "grade-calculator", "final-grade-calculator", "weighted-grade-calculator", "gpa-calculator", "test-grade-calculator", "ez-grader", "percentage-grade-calculator",
 ].map((route) => `${route}/index.html`)]) {
   const path = resolve(dist, file);

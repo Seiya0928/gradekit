@@ -26,9 +26,12 @@ test("all calculator routes contain static SEO and accessibility essentials", as
 
 test("discovery files list every canonical route", async () => {
   const sitemap = await readFile(resolve(root, "site", "sitemap.xml"), "utf8");
+  const textSitemap = await readFile(resolve(root, "site", "sitemap.txt"), "utf8");
   const robots = await readFile(resolve(root, "site", "robots.txt"), "utf8");
   routes.forEach((route) => assert.match(sitemap, new RegExp(`/${route}/`)));
+  assert.deepEqual(textSitemap.trim().split("\n"), ["https://gradekit.pages.dev/", ...routes.map((route) => `https://gradekit.pages.dev/${route}/`)]);
   assert.match(robots, /Sitemap: https:\/\/gradekit\.pages\.dev\/sitemap\.xml/);
+  assert.match(robots, /Sitemap: https:\/\/gradekit\.pages\.dev\/sitemap\.txt/);
 });
 
 test("every local page, script, stylesheet, image, and icon reference resolves", async () => {
