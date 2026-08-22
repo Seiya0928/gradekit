@@ -6,3 +6,11 @@ https://gradekit.pages.dev/gpa-calculator/
 https://gradekit.pages.dev/test-grade-calculator/
 https://gradekit.pages.dev/ez-grader/
 https://gradekit.pages.dev/percentage-grade-calculator/
+https://gradekit.pages.dev/semester-grade-calculator/
+https://gradekit.pages.dev/high-school-gpa-calculator/
+https://gradekit.pages.dev/grade-curve-calculator/
+https://gradekit.pages.dev/grading-scale-chart/
+https://gradekit.pages.dev/study-tools/
+https://gradekit.pages.dev/about/
+https://gradekit.pages.dev/privacy/
+https://gradekit.pages.dev/affiliate-disclosure/

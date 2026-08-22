@@ -24,3 +24,18 @@ export const ezGrade = (total, wrong) => {
   const correct = total - wrong;
   return { correct, score: total > 0 ? correct / total * 100 : NaN };
 };
+// High-school GPA: `bonus` is the extra weight for honors (+0.5) or AP/IB (+1.0).
+// Returns both figures because colleges usually recalculate from the unweighted one.
+export const highSchoolGpa = (rows) => {
+  const valid = rows.filter((r) => Number.isFinite(r.points) && Number.isFinite(r.bonus) && Number.isFinite(r.credits) && r.credits > 0);
+  const credits = valid.reduce((sum, r) => sum + r.credits, 0);
+  if (!credits) return { weighted: NaN, unweighted: NaN, credits: 0 };
+  return {
+    weighted: valid.reduce((sum, r) => sum + (r.points + r.bonus) * r.credits, 0) / credits,
+    unweighted: valid.reduce((sum, r) => sum + r.points * r.credits, 0) / credits,
+    credits,
+  };
+};
+export const flatCurve = (score, points) => Number.isFinite(score) && Number.isFinite(points) ? score + points : NaN;
+export const squareRootCurve = (score) => Number.isFinite(score) && score >= 0 ? Math.sqrt(score) * 10 : NaN;
+export const scaleToTop = (score, topScore) => topScore > 0 ? score / topScore * 100 : NaN;

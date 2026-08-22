@@ -1,4 +1,4 @@
-import { ezGrade, finalNeeded, gpa, letterGrade, maxFinalGrade, percentage, round, weightedAverage } from "./calculators.js";
+import { ezGrade, finalNeeded, flatCurve, gpa, highSchoolGpa, letterGrade, maxFinalGrade, percentage, round, scaleToTop, squareRootCurve, weightedAverage } from "./calculators.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -119,7 +119,51 @@ function initPercentage() {
   $$("#calculator input").forEach((el) => el.addEventListener("input", calculate)); calculate();
 }
 
-const initializers = { grade: initGrade, final: initFinal, weighted: initWeighted, gpa: initGpa, test: initTest, ez: initEz, percentage: initPercentage };
+function initSemester() {
+  const calculate = () => {
+    const rows = [["#term1", "#w1"], ["#term2", "#w2"], ["#exam", "#w3"]].map(([g, w]) => ({ grade: num(g), weight: num(w) }));
+    const result = weightedAverage(rows);
+    if (!(result.totalWeight > 0)) return setResult("<p>Enter at least one weight greater than 0%.</p>", "warning");
+    const off = Math.abs(result.totalWeight - 100) > .01;
+    setResult(`<p class="eyebrow">Semester grade</p><p class="result-number">${fmt(result.score)} ${gradeBadge(result.score)}</p><p>Your weights total <strong>${round(result.totalWeight, 1)}%</strong>${off ? ". The result is normalized to the weight entered." : "."}</p>`, off ? "warning" : "");
+    announce(`Semester grade ${fmt(result.score)}`);
+  };
+  $$("#calculator input").forEach((el) => el.addEventListener("input", calculate)); calculate();
+}
+
+function initHsGpa() {
+  const grades = [["A", 4], ["A−", 3.7], ["B+", 3.3], ["B", 3], ["B−", 2.7], ["C+", 2.3], ["C", 2], ["C−", 1.7], ["D", 1], ["F", 0]];
+  const levels = [["Regular (+0.0)", 0], ["Honors (+0.5)", 0.5], ["AP / IB (+1.0)", 1]];
+  const select = (items, selected) => items.map(([label, value]) => `<option value="${value}"${value === selected ? " selected" : ""}>${label}</option>`).join("");
+  const calculate = () => {
+    const rows = $$(".data-row").map((r) => ({ points: Number($(".grade", r).value), bonus: Number($(".level", r).value), credits: Number($(".credits", r).value) }));
+    const result = highSchoolGpa(rows);
+    const show = (n) => Number.isFinite(n) ? round(n, 2).toFixed(2) : "—";
+    setResult(`<p class="eyebrow">Weighted GPA</p><p class="result-number">${show(result.weighted)}<span class="grade-badge">weighted</span></p><ul class="curve-list"><li><span>Unweighted GPA (4.0 cap)</span><strong>${show(result.unweighted)}</strong></li><li><span>Credits counted</span><strong>${round(result.credits, 1)}</strong></li></ul>`);
+    announce(`Weighted GPA ${show(result.weighted)}, unweighted ${show(result.unweighted)}`);
+  };
+  bindRows({
+    defaults: [{ points: 4, bonus: 1, credits: 1 }, { points: 3.3, bonus: 0.5, credits: 1 }, { points: 3.7, bonus: 0, credits: 1 }],
+    rowHtml: (v) => `<label>Grade<select class="grade">${select(grades, v.points ?? 4)}</select></label><label>Level<select class="level">${select(levels, v.bonus ?? 0)}</select></label><label>Credits<input class="credits" type="number" inputmode="decimal" min="0.5" step="0.5" value="${v.credits ?? 1}"></label><button class="remove" type="button" aria-label="Remove course">Remove</button>`,
+    calculate,
+  });
+  $$(".data-row").forEach((row) => row.classList.add("three"));
+}
+
+function initCurve() {
+  const calculate = () => {
+    const raw = num("#raw"), points = num("#flat"), top = num("#top");
+    if (!(Number.isFinite(raw) && raw >= 0)) return setResult("<p>Enter a raw score of 0% or higher.</p>", "warning");
+    const added = Number.isFinite(points) ? points : 0;
+    const flat = flatCurve(raw, added), root = squareRootCurve(raw), scaled = scaleToTop(raw, top);
+    const line = (label, value) => `<li><span>${label}</span><strong>${fmt(value)} · ${letterGrade(value)}</strong></li>`;
+    setResult(`<p class="eyebrow">Raw score ${fmt(raw)} · ${letterGrade(raw)}</p><p class="result-title">Three ways to curve it</p><ul class="curve-list">${line(`Flat curve (+${round(added, 1)})`, flat)}${line("Square root curve", root)}${line("Scaled to class high", scaled)}</ul>`);
+    announce(`Flat ${fmt(flat)}, square root ${fmt(root)}, scaled ${fmt(scaled)}`);
+  };
+  $$("#calculator input").forEach((el) => el.addEventListener("input", calculate)); calculate();
+}
+
+const initializers = { grade: initGrade, final: initFinal, weighted: initWeighted, gpa: initGpa, test: initTest, ez: initEz, percentage: initPercentage, semester: initSemester, hsgpa: initHsGpa, curve: initCurve };
 const type = document.body.dataset.calculator;
 if (initializers[type]) initializers[type]();
 

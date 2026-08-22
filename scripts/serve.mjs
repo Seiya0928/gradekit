@@ -8,7 +8,12 @@ const server = createServer((req, res) => {
   const clean = decodeURIComponent((req.url || "/").split("?")[0]);
   let path = join(root, clean);
   if (existsSync(path) && statSync(path).isDirectory()) path = join(path, "index.html");
-  if (!existsSync(path)) { res.writeHead(404); res.end("Not found"); return; }
+  // Mirror Cloudflare Pages: unknown paths render 404.html with a 404 status.
+  if (!existsSync(path)) {
+    res.writeHead(404, { "Content-Type": types[".html"] });
+    createReadStream(join(root, "404.html")).pipe(res);
+    return;
+  }
   res.setHeader("Content-Type", types[extname(path)] || "application/octet-stream");
   createReadStream(path).pipe(res);
 });
