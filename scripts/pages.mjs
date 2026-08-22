@@ -284,7 +284,7 @@ export const docs = {
     meta: "A short, honest list of the tools that actually help with coursework — what each category is for, and when the free tier is enough.",
     lede: "A short list of tools worth knowing about, grouped by the problem they solve.",
     kind: "resource",
-    body: `<p>GradeKit’s calculators tell you where your grade stands. They do not help you write the paper, keep the reading straight, or remember the deadline. These are the categories of tool that do, along with what to look for before paying for any of them.</p>
+    body: `<p>GradeKit’s calculators tell you where your grade stands — the <a href="/grade-calculator/">grade calculator</a> for today’s average, the <a href="/final-grade-calculator/">final grade calculator</a> for what is still reachable. They do not help you write the paper, keep the reading straight, or remember the deadline. These are the categories of tool that do, along with what to look for before paying for any of them.</p>
 <h2>Start with what your school already pays for</h2>
 <p>Before buying anything, check your library portal. Most universities and many high schools already license citation managers, grammar tools, and full research databases. Students routinely pay for software their tuition already covers.</p>
 <h2>Writing and grammar</h2>
